@@ -1,17 +1,17 @@
 """
-RHC NN training on Madelon data (Feature selection complete)
+RHC NN training on my classification problem
 
 """
 
 """
+Do this before running the code in terminal / command line:
 git clone https://github.com/originell/jpype.git
 cd jpype
 python setup.py install'
 
-in terminal / command line
+Additional reference doc:
+https://stackoverflow.com/questions/35736763/practical-use-of-java-class-jar-in-python
 """
-
-"""https://stackoverflow.com/questions/35736763/practical-use-of-java-class-jar-in-python"""
 
 import os
 import csv
