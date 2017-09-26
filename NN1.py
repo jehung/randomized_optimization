@@ -34,55 +34,45 @@ jp.java.shared.SumOfSquaresError
 jp.java.shared.DataSet
 jp.java.shared.Instance
 jp.java.opt.SimulatedAnnealing
-jp.java.opt.SimulatedAnnealing
+jp.java.opt.example.NeuralNetworkOptimizationProblem
+jp.java.opt.RandomizedHillClimbing
 jp.java.ga.StandardGeneticAlgorithm
 jp.java.func.nn.activation.RELU
 
 
-
-#c = jp.JClass('BackPropagationNetworkFactory')
-#print(c)
-
-c = jp.JPackage('src').func.nn.backprop.BackPropogationNetworkFactory
+BackPropagationNetworkFactory = jp.JPackage('func').nn.backprop.BackPropagationNetworkFactory
+DataSet = jp.JPackage('shared').DataSet
+SumOfSquaresError = jp.JPackage('shared').SumOfSquaresError
+NeuralNetworkOptimizationProblem = jp.JPackage('opt').example.NeuralNetworkOptimizationProblem
+RandomizedHillClimbing = jp.JPackage('opt').RandomizedHillClimbing
 Instance = jp.JPackage('shared').Instance
+RELU = jp.JPackage('func').nn.activation.RELU
 
-print(Instance)
-INPUT_LAYER = 31
-HIDDEN_LAYER1 = 62
-HIDDEN_LAYER2 = 62
-HIDDEN_LAYER3 = 62
+
+INPUT_LAYER = 109
+HIDDEN_LAYER1 = 100
+HIDDEN_LAYER2 = 100
+HIDDEN_LAYER3 = 100
 OUTPUT_LAYER = 1
 TRAINING_ITERATIONS = 5001
 OUTFILE = 'LOG.txt'
 
 
-
 def initialize_instances(infile):
-    """Read the m_trg.csv CSV data into a list of instances."""
-    '''
+    """Read the train.csv CSV data into a list of instances."""
     instances = []
 
     # Read in the CSV file
     with open(infile, "r") as dat:
+        next(dat)
         reader = csv.reader(dat)
 
         for row in reader:
             instance = Instance([float(value) for value in row[:-1]])
-            instance.setLabel(Instance(0 if float(row[-1]) < 0 else 1))
+            instance.setLabel(Instance(float(row[-1])))
             instances.append(instance)
 
     return instances
-    '''
-
-    file = 'train.csv'
-    data = pd.read_csv(file)
-
-    numerical_features = ['Number of Donations', 'Months since First Donation', 'Months since Last Donation']
-    y = data['Made Donation in March 2007']
-    X = data.loc[:, numerical_features]
-    scaler = StandardScaler()
-    X = scaler.fit_transform(X)
-    return X, y.values
 
 
 
@@ -115,7 +105,7 @@ def train(oa, network, oaName, training_ints,validation_ints,testing_ints, measu
     """
     print("\nError results for %s\n---------------------------" % (oaName,))
     times = [0]
-    for iteration in xrange(TRAINING_ITERATIONS):
+    for iteration in range(TRAINING_ITERATIONS):
         start = time.clock()
         oa.train()
         elapsed = time.clock()-start
@@ -137,7 +127,7 @@ def main():
     measure = SumOfSquaresError()
     data_set = DataSet(training_ints)
     relu = RELU()
-    rule = RPROPUpdateRule()
+    #rule = RPROPUpdateRule()
     oa_names = ["RHC"]
     classification_network = factory.createClassificationNetwork([INPUT_LAYER, HIDDEN_LAYER1,HIDDEN_LAYER2,HIDDEN_LAYER3, OUTPUT_LAYER],relu)
     nnop = NeuralNetworkOptimizationProblem(data_set, classification_network, measure)
