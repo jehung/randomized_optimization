@@ -52,12 +52,13 @@ RELU = jp.JPackage('func').nn.activation.RELU
 
 
 INPUT_LAYER = 109
-HIDDEN_LAYER1 = 100
-HIDDEN_LAYER2 = 100
-HIDDEN_LAYER3 = 100
+#HIDDEN_LAYER1 = 100
+#HIDDEN_LAYER2 = 100
+#HIDDEN_LAYER3 = 100
 OUTPUT_LAYER = 1
 TRAINING_ITERATIONS = 5001
-OUTFILE = 'LOG.txt'
+OUTFILE = './NN_OUTPUT/RHC_LOG.txt'
+
 
 
 def get_all_data():
@@ -222,7 +223,7 @@ def main():
     data_set = DataSet(training_ints)
     relu = RELU()
     #rule = RPROPUpdateRule()
-    classification_network = factory.createClassificationNetwork([INPUT_LAYER, HIDDEN_LAYER1,HIDDEN_LAYER2,HIDDEN_LAYER3, OUTPUT_LAYER],relu)
+    classification_network = factory.createClassificationNetwork([INPUT_LAYER, OUTPUT_LAYER],relu)
     nnop = NeuralNetworkOptimizationProblem(data_set, classification_network, measure)
     oa = RandomizedHillClimbing(nnop)
     train(oa, classification_network, 'RHC', training_ints,testing_ints, measure)
