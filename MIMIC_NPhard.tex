@@ -12,15 +12,21 @@
 \maketitle
 
 \subsection*{Machine Learning Problem}
-The emphasis of machine learning is on automatic methods. In other words, the goal is to devise learning algorithms that do the learning automatically without human intervention or assistance. The machine learning paradigm can be viewed as ?programming by example.? Often we have a specific task in mind, such as spam filtering. But rather than program the computer to solve the task directly, in machine learning, we seek methods by which the computer will come up with its own program based on examples that we provide. Machine learning is a core subarea of artificial intelligence. It is very unlikely that we will be able to build any kind of intelligent system capable of any of the facilities that we associate with intelligence, such as language or vision, without using learning to get there. These tasks are otherwise simply too difficult to solve. Further, we would not consider a system to be truly intelligent if it were incapable of learning since learning is at the core of
+The emphasis of machine learning is on automatic methods. In other words, the goal is to devise learning algorithms that do the learning automatically without human intervention or assistance. The machine learning paradigm can be viewed as programming by example. Often we have a specific task in mind, such as spam filtering. But rather than program the computer to solve the task directly, in machine learning, we seek methods by which the computer will come up with its own program based on examples that we provide. Machine learning is a core subarea of artificial intelligence. It is very unlikely that we will be able to build any kind of intelligent system capable of any of the facilities that we associate with intelligence, such as language or vision, without using learning to get there. These tasks are otherwise simply too difficult to solve. Further, we would not consider a system to be truly intelligent if it were incapable of learning since learning is at the core of
 intelligence. 
 
-More specifically, in the power set of all the hypotheses that exit, the goal of a machine learning problem.
-
-
+More specifically, in the power set of all the hypotheses that exit, the goal of a machine learning problem is to find the best hypothesis that consistently explains the observed data. Then using this best hypothesis, then we can do all sorts of fancy things such as predict outcomes and prescribe actions in an intelligent way.
 
 \subsection*{Bayesian Learning: the Gold Standard}
+An astute observer should recognize the statement of \textbf{finding the best hypothesis that consistently explains the observed data} can be conveniently described mathematically as 
 
+\begin{align*}
+    \frac{f(x+h)-f(x)}{h} & =  \frac{(x+h)^3-x^3}{h}   \\
+                          & =  \frac{x^3+3x^2h+3xh^2+h^3 - x^3}{h}\\
+                          & =  \frac{3x^2h+2xh^2+h^3}{h}\\
+                          & =  \frac{h(3x^2+2xh+h^2)}{h}\\
+                          & =  3x^2+2xh+h^2
+\end{align*} 
 
 
 
@@ -48,6 +54,12 @@ we have
 \end{align*} 
 
 \subsection*{Information Theory}
+
+
+
+\subsection{Code Example}
+
+
 Use the definition of the derivative to find $f'(x)$ when $f(x)=x^{\frac{1}{4}}$.
 
 Using the definition of the derivative, we have
