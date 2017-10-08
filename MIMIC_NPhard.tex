@@ -1,0 +1,75 @@
+\documentclass{article}
+\usepackage[left=3cm,right=3cm,top=0cm,bottom=2cm]{geometry} % page settings
+\usepackage{amsmath} % provides many mathematical environments & tools
+
+\setlength{\parindent}{0mm}
+
+\begin{document}
+
+\title{Use MIMIC to solve NP-Hard Problems: Universal Portfolios}
+\author{Jenny Hung}
+\date{\today}
+\maketitle
+
+\subsection*{Machine Learning Problem}
+The emphasis of machine learning is on automatic methods. In other words, the goal is to devise learning algorithms that do the learning automatically without human intervention or assistance. The machine learning paradigm can be viewed as ?programming by example.? Often we have a specific task in mind, such as spam filtering. But rather than program the computer to solve the task directly, in machine learning, we seek methods by which the computer will come up with its own program based on examples that we provide. Machine learning is a core subarea of artificial intelligence. It is very unlikely that we will be able to build any kind of intelligent system capable of any of the facilities that we associate with intelligence, such as language or vision, without using learning to get there. These tasks are otherwise simply too difficult to solve. Further, we would not consider a system to be truly intelligent if it were incapable of learning since learning is at the core of
+intelligence. 
+
+More specifically, in the power set of all the hypotheses that exit, the goal of a machine learning problem.
+
+
+
+\subsection*{Bayesian Learning: the Gold Standard}
+
+
+
+
+\subsection*{MIMIC Algorithm}
+MIMIC addresses the shortcoming of Genetic Algorithm, which randomly seeks the optimal solution without conveying structure. MIMIC, however, initially takes a uniform sample from a population by using a fitness function $f(x) \ge \theta$. Once this initial sample is made, the MIMIC algorithm then sorts the sample, taking only the top $n^{th}$ percentile. This procedure bear resemblance to the GA algorithm so far, but in the next step, they differ. MIMIC will then \textbf{estimate} the probability distribution by using a dependency tree. Once this probability distribution is established, the a random sample was then again selected from this distribution, and the algorithm repeats. 
+
+\paragraph{}
+This probability distribution is done by using the simplest kind of Bayesian network, where the nodes share a particular kind of relationship: one where for every node, $x_i$, there is at most $1$ relationship between such node and other nodes. Further, we also assumes independence among the conditional probabilities, so that the join probability distribution is then a product of each of the conditional probabilities. 
+
+\paragraph{}
+The MIMIC algorithm will find the maximum spanning tree (MST) where the mutual information, $I(x_i, \pi(x)_y$ is the greatest. Namely, the algorithm will seek to find best parent node, $\pi(x)_i$, for every node $x_i$, such that if we have some information about the parent node, then we know the most that we can about the child node. In fact, as the algorithm iterates, it will gradually move from the uniform distribution, to the optima. Because MIMIC estimates the probability distribution, it conveys structure, which Genetic Algorithm does not.
+
+\paragraph{}
+Two crucial assumptions for MIMIC is the smoothness of probability distribution and that it is indeed possible to estimate an appropriate probability distribution.
+
+\paragraph{}
+We proceed as demonstrated in the lab manual; assuming that $h\ne 0$ 
+we have
+\begin{align*}
+    \frac{f(x+h)-f(x)}{h} & =  \frac{(x+h)^3-x^3}{h}   \\
+                          & =  \frac{x^3+3x^2h+3xh^2+h^3 - x^3}{h}\\
+                          & =  \frac{3x^2h+2xh^2+h^3}{h}\\
+                          & =  \frac{h(3x^2+2xh+h^2)}{h}\\
+                          & =  3x^2+2xh+h^2
+\end{align*} 
+
+\subsection*{Information Theory}
+Use the definition of the derivative to find $f'(x)$ when $f(x)=x^{\frac{1}{4}}$.
+
+Using the definition of the derivative, we have
+\begin{align*}
+            f'(x)           &= \lim_{h\rightarrow 0}\frac{(x+h)^{1/4}-x^{1/4}}{h}   \\
+                            &=  \lim_{h\rightarrow 0}\frac{(x+h)^{1/4}-x^{1/4}}{h}\cdot \frac{((x+h)^{1/4}+x^{1/4})((x+h)^{1/2}+x^{1/2})}{((x+h)^{1/4}+x^{1/4})((x+h)^{1/2}+x^{1/2})}\\
+                            &=  \lim_{h\rightarrow 0}\frac{(x+h)-x}{h((x+h)^{1/4}+x^{1/4})((x+h)^{1/2}+x^{1/2})}    \\  
+                            &=  \lim_{h\rightarrow 0}\frac{1}{((x+h)^{1/4}+x^{1/4})((x+h)^{1/2}+x^{1/2})}   \\
+                            &= \frac{1}{(x^{1/4}+x^{1/4})(x^{1/2}+x^{1/2})} \\
+                            &=  \frac{1}{(2x^{1/4})(2x^{1/2})}  \\
+                            &=  \frac{1}{4x^{3/4}}  \\
+                            &=  \frac{1}{4}x^{-3/4}
+\end{align*}
+Note: the key observation here is that
+\begin{align*}
+    a^4-b^4 &= (a^2-b^2)(a^2+b^2)   \\
+        &= (a-b)(a+b)(a^2+b^2), 
+\end{align*}
+with 
+\[
+    a = (x+h)^{1/4}, \qquad b = x^{1/4},
+\]
+which allowed us to rationalize the denominator.
+
+\end{document}
