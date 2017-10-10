@@ -26,6 +26,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from itertools import product
 #jp.startJVM(jp.getDefaultJVMPath(), "-ea")
 
 jp.startJVM(jp.getDefaultJVMPath(), '-ea', '-Djava.class.path=/Users/jennyhung/MathfreakData/School/OMSCS_ML/Assign2/abagail_py/ABAGAIL/ABAGAIL.jar')
@@ -212,14 +213,14 @@ def train(oa, network, oaName, training_ints,testing_ints, measure):
         oa.train()
         elapsed = time.clock()-start
         times.append(times[-1]+elapsed)
-        if iteration % 10 == 0:
+        if iteration % 100 == 0:
             MSE_trg, acc_trg = errorOnDataSet(network,training_ints,measure)
             MSE_tst, acc_tst = errorOnDataSet(network,testing_ints,measure)
             txt = '{},{},{},{},{},{}\n'.format(iteration,MSE_trg,MSE_tst,acc_trg,acc_tst,times[-1]);print(txt)
             with open(OUTFILE,'a+') as f:
                 f.write(txt)
 
-def main(S, keep):
+def main(sample, keep, m):
     """Run this experiment"""
     all_data = get_all_data()
     train_set, val_set = get_cv_set(all_data)
@@ -236,57 +237,22 @@ def main(S, keep):
     with open(OUTFILE.replace('XXX', oa_name), 'w') as f:
         f.write('{},{},{},{},{},{}\n'.format('iteration', 'MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed'))
     classification_network = factory.createClassificationNetwork([INPUT_LAYER, OUTPUT_LAYER],relu)
-    #nnop = NeuralNetworkOptimizationProblem(data_set, classification_network, measure)
     ranges = array('i', [2] * 1)
-    ef = ContinuousPeaksEvaluationFunction(S)
+    #ranges = array('i', train_label)
+    ef = ContinuousPeaksEvaluationFunction(keep)
     odd = DiscreteUniformDistribution(ranges)
-    df = DiscreteDependencyTree(.1, ranges)
+    df = DiscreteDependencyTree(m, ranges)
     pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
-    oa = MIMIC(200, 20, pop)
-    #train(oa, classification_network, oa_name, training_ints,testing_ints, measure)
-    fit = FixedIterationTrainer(mimic, 10)
-    for i in range(0, 2001, 10):
-        start = clock()
-        fit.train()
-        elapsed = time.clock() - start
-        times.append(times[-1] + elapsed)
-        fevals = ef.fevals
-        score = ef.value(mimic.getOptimal())
-        ef.fevals -= 1
-        st = '{},{},{},{}\n'.format(i, score, times[-1], fevals)
-        print
-        st
-        with open(fname, 'a') as f:
-            f.write(st)
+    oa = MIMIC(sample, keep, pop)
+    train(oa, classification_network, oa_name, training_ints,testing_ints, measure)
 
 
-'''
-for t in range(numTrials):
-	for samples,keep,m in product([100],[50],[0.1,0.3,0.5,0.7,0.9]):
-		fname = outfile.replace('@ALG@','MIMIC{}_{}_{}'.format(samples,keep,m)).replace('@N@',str(t+1))
-		with open(fname,'w') as f:
-			f.write('iterations,fitness,time,fevals\n')
-		ef = ContinuousPeaksEvaluationFunction(T)
-		odd = DiscreteUniformDistribution(ranges)
-		nf = DiscreteChangeOneNeighbor(ranges)
-		mf = DiscreteChangeOneMutation(ranges)
-		cf = SingleCrossOver()
-		gap = GenericGeneticAlgorithmProblem(ef, odd, mf, cf)
-		df = DiscreteDependencyTree(m, ranges)
-		pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
-		mimic = MIMIC(samples, keep, pop)
-		fit = FixedIterationTrainer(mimic, 10)
-		times =[0]
-		for i in range(0,maxIters,10):
-			start = clock()
-			fit.train()
-			elapsed = time.clock()-start
-			times.append(times[-1]+elapsed)
-			fevals = ef.fevals
-			score = ef.value(mimic.getOptimal())
-			ef.fevals -= 1
-			st = '{},{},{},{}\n'.format(i,score,times[-1],fevals)
-			print st
-			with open(fname,'a') as f:
-				f.write(st)
-'''
+
+if __name__ == "__main__":
+    for sample in [20000]:
+        for keep in [5]:
+            for m in [0.1,0.3,0.5,0.7,0.9]:
+                args = (sample,keep,m)
+                main(*args)
+
+
