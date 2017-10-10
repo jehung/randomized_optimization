@@ -8,7 +8,7 @@ import shared.Instance;
  * @version 1.0
  */
 public interface EvaluationFunction {
-    
+
     /**
      * Evaluate a data
      * @param d the data to evaluate
