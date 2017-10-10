@@ -1,13 +1,13 @@
 __author__ = 'Jeff'
 import os
-import cPickle as pickle
-
+import pickle as pickle
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
 
-from AnalyzeData import colorList
-from FitnessFunctions import OptimizationSurface, four_peaks, bin_list_to_int, OptimizationImage
+#from AnalyzeData import colorList
+#from FitnessFunctions import OptimizationSurface, four_peaks, bin_list_to_int, OptimizationImage
 
 
 def load_results_dicts(results_path):
@@ -20,8 +20,9 @@ def load_results_dicts(results_path):
         full_path = os.path.join(results_path, file_name)
 
         with open(full_path, 'rb') as file_obj:
-            results_dicts.append(pickle.load(file_obj))
-
+            results_dicts.append(pd.read_csv(file_obj))
+    print(results_dicts)
+'''
     ga_results = []
     sa_results = []
     rhc_results = []
@@ -35,7 +36,7 @@ def load_results_dicts(results_path):
     sorted_results = dict(ga=ga_results, sa=sa_results, rhc=rhc_results, mim=mim_results)
 
     return sorted_results
-
+'''
 
 def process_fitness(data_path):
 
@@ -241,8 +242,9 @@ def process_images():
 
 if __name__ == "__main__":
 
-    data_path = os.path.join(os.curdir,'results/Knapsack')
+    data_path = os.path.join(os.curdir,'CONTPEAKS')
+    ans = load_results_dicts(data_path)
 
     # process_fitness(data_path)
     # process_positions()
-    process_images()
+    #process_images()
