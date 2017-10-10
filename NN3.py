@@ -37,6 +37,7 @@ jp.java.shared.DataSet
 jp.java.shared.Instance
 jp.java.opt.SimulatedAnnealing
 jp.java.opt.example.NeuralNetworkOptimizationProblem
+jp.java.opt.prob.ProbabilisticOptimizationProblem
 jp.java.opt.RandomizedHillClimbing
 jp.java.ga.StandardGeneticAlgorithm
 jp.java.func.nn.activation.RELU
