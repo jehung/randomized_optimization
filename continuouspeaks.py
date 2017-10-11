@@ -84,7 +84,7 @@ pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
 for t in range(numTrials):
     fname = outfile.replace('@ALG@','RHC').replace('@N@',str(t+1))
     with open(fname,'w') as f:
-        f.write('iterations,fitness,time,fevals\n')
+        f.write('algo,trial,iterations,param1,param2,param3,fitness,time,fevals\n')
     ef = ContinuousPeaksEvaluationFunction(T)
     odd = DiscreteUniformDistribution(ranges)
     nf = DiscreteChangeOneNeighbor(ranges)
@@ -100,7 +100,7 @@ for t in range(numTrials):
         fevals = ef.fevals
         score = ef.value(rhc.getOptimal())
         ef.fevals -= 1
-        st = '{},{},{},{}\n'.format(i,score,times[-1],fevals)
+        st = '{},{},{},{},{},{},{},{},{}\n'.format('RHC',t,i,'param1','param2','param3',score,times[-1],fevals)
         print(st)
         with open(fname,'a') as f:
             f.write(st)
@@ -112,7 +112,7 @@ for t in range(numTrials):
     for CE in [0.15,0.35,0.55,0.75,0.95]:
         fname = outfile.replace('@ALG@','SA{}'.format(CE)).replace('@N@',str(t+1))
         with open(fname,'w') as f:
-            f.write('iterations,fitness,time,fevals\n')
+            f.write('algo,trial,iterations,param1,param2,param3,fitness,time,fevals\n')
         ef = ContinuousPeaksEvaluationFunction(T)
         odd = DiscreteUniformDistribution(ranges)
         nf = DiscreteChangeOneNeighbor(ranges)
@@ -128,7 +128,7 @@ for t in range(numTrials):
             fevals = ef.fevals
             score = ef.value(sa.getOptimal())
             ef.fevals -= 1
-            st = '{},{},{},{}\n'.format(i,score,times[-1],fevals)
+            st = '{},{},{},{},{},{},{},{},{}\n'.format('SA',t,i,CE,'param2','param3',score,times[-1],fevals)
             print(st)
             with open(fname,'a') as f:
                 f.write(st)
@@ -138,7 +138,7 @@ for t in range(numTrials):
     for pop,mate,mutate in product([100],[50,30,10],[50,30,10]):
         fname = outfile.replace('@ALG@','GA{}_{}_{}'.format(pop,mate,mutate)).replace('@N@',str(t+1))
         with open(fname,'w') as f:
-            f.write('iterations,fitness,time,fevals\n')
+            f.write('algo,trial,iterations,param1,param2,param3,fitness,time,fevals\n')
         ef = ContinuousPeaksEvaluationFunction(T)
         odd = DiscreteUniformDistribution(ranges)
         nf = DiscreteChangeOneNeighbor(ranges)
@@ -156,7 +156,7 @@ for t in range(numTrials):
             fevals = ef.fevals
             score = ef.value(ga.getOptimal())
             ef.fevals -= 1
-            st = '{},{},{},{}\n'.format(i,score,times[-1],fevals)
+            st = '{},{},{},{},{},{},{},{},{}\n'.format('GA',t,i,pop,mate,mutate,score,times[-1],fevals)
             print(st)
             with open(fname,'a') as f:
                 f.write(st)
@@ -166,7 +166,7 @@ for t in range(numTrials):
     for samples,keep,m in product([100],[50],[0.1,0.3,0.5,0.7,0.9]):
         fname = outfile.replace('@ALG@','MIMIC{}_{}_{}'.format(samples,keep,m)).replace('@N@',str(t+1))
         with open(fname,'w') as f:
-            f.write('iterations,fitness,time,fevals\n')
+            f.write('algo,trial,iterations,param1,param2,param3,fitness,time,fevals\n')
         ef = ContinuousPeaksEvaluationFunction(T)
         odd = DiscreteUniformDistribution(ranges)
         nf = DiscreteChangeOneNeighbor(ranges)
@@ -186,7 +186,7 @@ for t in range(numTrials):
             fevals = ef.fevals
             score = ef.value(mimic.getOptimal())
             ef.fevals -= 1
-            st = '{},{},{},{}\n'.format(i,score,times[-1],fevals)
+            st = '{},{},{},{},{},{},{},{},{}\n'.format('MIMIC',t,i,samples,keep,m,score,times[-1],fevals)
             print(st)
             with open(fname,'a') as f:
                 f.write(st)
