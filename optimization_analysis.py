@@ -6,8 +6,22 @@ import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 import numpy as np
 
-#from AnalyzeData import colorList
-#from FitnessFunctions import OptimizationSurface, four_peaks, bin_list_to_int, OptimizationImage
+
+colorList = [
+            [255./255., 51./255., 51./255.],
+            [255./255., 153./255., 51./255.],
+            [255./255., 255./255, 51./255],
+            [153./255., 255./255, 51./255],
+            [51./255., 255./255, 51./255],
+            [51./255., 255./255, 153./255],
+            [51./255., 255./255, 255./255],
+            [51./255., 153./255, 255./255],
+            [51./255., 51./255, 255./255],
+            [153./255., 51./255, 255./255],
+            [255./255., 51./255, 255./255],
+            [255./255., 51./255, 153./255],
+            [160./255., 160./255, 160./255]
+            ]
 
 
 def load_results_dicts(results_path):
@@ -21,83 +35,36 @@ def load_results_dicts(results_path):
 
         with open(full_path, 'rb') as file_obj:
             results_dicts.append(pd.read_csv(file_obj))
-    print(results_dicts)
-'''
-    ga_results = []
-    sa_results = []
-    rhc_results = []
-    mim_results = []
-    for iteration in results_dicts:
-        ga_results.append(iteration['ga'])
-        sa_results.append(iteration['sa'])
-        rhc_results.append(iteration['rhc'])
-        mim_results.append(iteration['mim'])
+            a = pd.concat(results_dicts)
+    results_group = a.groupby('algo', as_index=False)['algo','trial','iterations','param1','param2','param3','fitness','time','fevals']
 
-    sorted_results = dict(ga=ga_results, sa=sa_results, rhc=rhc_results, mim=mim_results)
+    ga_results = results_group.get_group('GA').groupby(['iterations','param1','param2','param3'],as_index=False)['algo','fitness','time','fevals'].mean()
+    sa_results = results_group.get_group('SA').groupby(['iterations','param1','param2','param3'],as_index=False)['algo','fitness','time','fevals'].mean()
+    rhc_results = results_group.get_group('RHC').groupby(['iterations','param1','param2','param3'],as_index=False)['algo','fitness','time','fevals'].mean()
+    mim_results = results_group.get_group('MIMIC').groupby(['iterations','param1','param2','param3'],as_index=False)['algo','fitness','time','fevals'].mean()
 
-    return sorted_results
-'''
-
-def process_fitness(data_path):
-
-    sorted_results = load_results_dicts(data_path)
+    return [ga_results, sa_results, rhc_results, mim_results]
 
 
+def process_fitness(result_list):
+    for result in result_list:
+        groups = result.groupby(['param1','param2','param3'])
 
-    fig_final = plt.figure()
-    ax_final = fig_final.add_subplot(111)
+        fig, ax = plt.subplots()
+        ax.margins(0.05)  # Optional, just adds 5% padding to the autoscaling
+        for name, group in groups:
+            print(name)
+            print(group)
+            ax.plot(group.iterations, group.fitness, marker='o', linestyle='', ms=12, label=name)
+        ax.legend()
 
-    fig_max = plt.figure()
-    ax_max = fig_max.add_subplot(111)
+        plt.show()
 
-    fig_curves = plt.figure()
-    ax_curves = fig_curves.add_subplot(111)
-    for algo_ind, algo in enumerate(sorted_results.iteritems()):
-        name = algo[0]
-        outputs = algo[1]
-
-        max_scores = []
-        final_scores = []
-        converge_iters = []
-        full_scores = []
-        for output in outputs:
-
-            members = [res[0] for res in output]
-            scores = np.asarray([res[1] for res in output])
-
-
-            full_scores.append(scores)
-            final_scores.append(scores[-1])
-            max_scores.append(np.max(scores))
-
-            previous = 0
-            for score_ind, score_val in enumerate(scores[::-1]):
-                if previous > score_val:
-                    break
-                previous = score_val
-
-            print(score_ind)
-            converge_iters.append(scores.shape[0]-score_ind)
-
-
-
-
-
-        ax_final.scatter(converge_iters, final_scores, c=colorList[algo_ind], alpha=0.8, s=50, label=name.upper())
-        ax_max.scatter(final_scores, max_scores, c=colorList[algo_ind], alpha=0.8, s=50, label=name.upper())
-
-        avg_scores = np.mean(np.asarray(full_scores), axis=0).flatten()
-
-        ax_curves.plot(avg_scores, c=colorList[algo_ind], alpha=0.9, linewidth=2, label=name.upper())
-
-
-
-    ax_final.legend(loc='best').draw_frame(False)
-
-    ax_max.legend(loc='lower right').draw_frame(False)
-
-    ax_curves.legend(loc='best').draw_frame(False)
-    plt.show()
+        '''
+        print(result.head())
+        result.plot(x='iterations', y='fitness', kind='line', label=True)
+        plt.show()
+        '''
 
 
 def process_positions():
@@ -154,6 +121,7 @@ def process_positions():
     #
     # ax.legend()
     plt.show()
+
 
 def process_images():
 
@@ -244,7 +212,7 @@ if __name__ == "__main__":
 
     data_path = os.path.join(os.curdir,'CONTPEAKS')
     ans = load_results_dicts(data_path)
-
-    # process_fitness(data_path)
-    # process_positions()
+    print('now stage 2')
+    process_fitness(ans)
+    #process_positions()
     #process_images()
