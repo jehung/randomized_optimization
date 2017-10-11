@@ -43,12 +43,12 @@ def load_results_dicts(results_path):
     rhc_results = results_group.get_group('RHC').groupby(['iterations','param1','param2','param3'],as_index=False)['algo','fitness','time','fevals'].mean()
     mim_results = results_group.get_group('MIMIC').groupby(['iterations','param1','param2','param3'],as_index=False)['algo','fitness','time','fevals'].mean()
 
-    return [ga_results, sa_results, rhc_results, mim_results]
+    return [('GA',ga_results), ('SA',sa_results), ('RHC',rhc_results), ('MIMIC',mim_results)]
 
 
 def process_fitness(result_list):
     for result in result_list:
-        groups = result.groupby(['param1','param2','param3'])
+        groups = result[1].groupby(['param1','param2','param3'])
 
         fig, ax = plt.subplots()
         ax.margins(0.05)  # Optional, just adds 5% padding to the autoscaling
@@ -56,15 +56,10 @@ def process_fitness(result_list):
             print(name)
             print(group)
             ax.plot(group.iterations, group.fitness, marker='o', linestyle='', ms=12, label=name)
+        ax.set_title('Fitness Function ' + result[0])
         ax.legend()
 
         plt.show()
-
-        '''
-        print(result.head())
-        result.plot(x='iterations', y='fitness', kind='line', label=True)
-        plt.show()
-        '''
 
 
 def process_positions():
