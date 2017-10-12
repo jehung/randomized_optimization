@@ -57,7 +57,7 @@ INPUT_LAYER = 109
 #HIDDEN_LAYER2 = 100
 #HIDDEN_LAYER3 = 100
 OUTPUT_LAYER = 1
-TRAINING_ITERATIONS = 5001
+TRAINING_ITERATIONS = 2001
 OUTFILE = './NN_OUTPUT/RHC_LOG.txt'
 
 
@@ -237,7 +237,7 @@ def main(P,mate,mutate):
 
 if __name__ == "__main__":
     for p in [50]:
-        for mate in [20,10]:
+        for mate in [20]:
             for mutate in [20,10]:
                 args = (p,mate,mutate)
                 main(*args)
