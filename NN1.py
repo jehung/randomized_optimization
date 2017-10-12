@@ -228,7 +228,7 @@ def main():
 
 
 if __name__ == "__main__":
-    with open(OUTFILE,'w') as f:
-        f.write('{},{},{},{},{},{}\n'.format('iteration','MSE_trg','MSE_tst','acc_trg','acc_tst','elapsed'))
+    with open(OUTFILE, 'w') as f:
+        f.write('{},{},{},{},{},{}\n'.format('iteration', 'MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed'))
     main()
     jp.shutdownJVM()
