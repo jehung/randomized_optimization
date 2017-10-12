@@ -56,7 +56,7 @@ INPUT_LAYER = 109
 #HIDDEN_LAYER2 = 100
 #HIDDEN_LAYER3 = 100
 OUTPUT_LAYER = 1
-TRAINING_ITERATIONS = 5001
+TRAINING_ITERATIONS = 2001
 OUTFILE = './NN_OUTPUT/XXX_LOG.txt'
 
 
@@ -233,6 +233,6 @@ def main(CE):
 
 
 if __name__ == "__main__":
-    for CE in [0.15, 0.35, 0.55, 0.70, 0.95]:
+    for CE in [0.15, 0.35, 0.70, 0.95]:
         main(CE)
     jp.shutdownJVM()
