@@ -182,7 +182,8 @@ def train(oa, network, oaName, instances, measure):
             example = Instance(output_values, Instance(output_values.get(0)))
             error += measure.value(output, example)
 
-        print("%0.03f" % error)
+        if iteration % 100 == 0:
+            print("%0.03f" % error)
 
 
 def main():
