@@ -62,6 +62,23 @@ def process_fitness(result_list):
         plt.show()
 
 
+def process_time(result_list):
+    for result in result_list:
+        groups = result[1].groupby(['param1','param2','param3'])
+
+        fig, ax = plt.subplots()
+        ax.margins(0.05)  # Optional, just adds 5% padding to the autoscaling
+        for name, group in groups:
+            print(name)
+            print(group)
+            ax.plot(group.iterations, group.time, marker='o', linestyle='', ms=12, label=name)
+        ax.set_title('Fitness Function ' + result[0])
+        ax.legend()
+
+        plt.show()
+
+
+
 def process_positions():
 
     sorted_results = load_results_dicts(os.path.join(os.curdir, 'results/Four_Peaks'))
@@ -118,96 +135,18 @@ def process_positions():
     plt.show()
 
 
-def process_images():
-
-    sorted_results = load_results_dicts(os.path.join(os.curdir, 'results/Image'))
-
-
-    problem = OptimizationImage(os.path.join(os.curdir,'img/facebook_logo.png'))
-
-    fig = plt.figure()
-    gs = gridspec.GridSpec(4, 4)
-
-
-    for algo_ind, algo in enumerate(sorted_results.iteritems()):
-        name = algo[0]
-        print(name)
-        outputs = algo[1]
-
-        ax = fig.add_subplot(gs[3, algo_ind])
-        ax1 = fig.add_subplot(gs[2, algo_ind])
-        ax2 = fig.add_subplot(gs[1, algo_ind])
-        ax3 = fig.add_subplot(gs[0, algo_ind])
-
-        max_scores = []
-        final_scores = []
-        # converge_iters = []
-        # full_scores = []
-        full_members = []
-        for output in outputs:
-
-            members = [res[0] for res in output]
-            scores = np.asarray([res[1] for res in output])
-
-            # full_scores.append(scores)
-            full_members.append(members)
-            final_scores.append(scores[-1])
-
-            max_scores.append((np.max(scores), np.argmax(scores)))
-
-        max_scores = np.asarray(max_scores)
-        # print(max_scores.shape)
-        best_run_ind = np.argmax(max_scores[:,0], axis=0)
-
-        # print(best_run)
-        best_image_ind = int(max_scores[best_run_ind, 1])
-
-        final_plot = full_members[best_run_ind][best_image_ind]
-        plot_60 = full_members[best_run_ind][int(best_image_ind*.6)]
-        plot_30 = full_members[best_run_ind][int(best_image_ind*.3)]
-        plot_0 = full_members[best_run_ind][0]
-
-
-        ax.imshow(problem.convert_for_plotting(final_plot), cmap='binary')
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-
-        ax1.imshow(problem.convert_for_plotting(plot_60), cmap='binary')
-        ax1.get_xaxis().set_visible(False)
-        ax1.get_yaxis().set_visible(False)
-
-        ax2.imshow(problem.convert_for_plotting(plot_30), cmap='binary')
-        ax2.get_xaxis().set_visible(False)
-        ax2.get_yaxis().set_visible(False)
-
-        ax3.imshow(problem.convert_for_plotting(plot_0), cmap='binary')
-        ax3.get_xaxis().set_visible(False)
-        ax3.get_yaxis().set_visible(False)
-        ax3.set_title(name.upper())
-
-        if algo_ind == 0:
-            ax.set_ylabel('100%')
-
-        # print(pos_tuples[0].shape)
-        # ax.scatter(pos_tuples[-1][:, 0], pos_tuples[-1][:, 1], c=colorList[algo_ind*3], label=name.upper())
-
-        # avg_scores = np.mean(np.asarray(pos_tuples), axis=0)
-        # print(avg_scores.shape)
-
-
-
-    # ax.legend()
-    plt.show()
-
+def process_summary():
+    pass
 
 
 
 
 if __name__ == "__main__":
-
     data_path = os.path.join(os.curdir,'CONTPEAKS')
     ans = load_results_dicts(data_path)
+    print(ans)
     print('now stage 2')
     process_fitness(ans)
+    #process_time(ans)
     #process_positions()
     #process_images()
