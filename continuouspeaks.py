@@ -64,7 +64,7 @@ MIMIC = jp.JPackage('opt').prob.MIMIC
 
 N=100
 T=49	
-maxIters = 2001
+maxIters = 20001
 numTrials=5
 fill = [2] * N
 ranges = array('i', fill)
@@ -161,6 +161,7 @@ for t in range(numTrials):
             with open(fname,'a') as f:
                 f.write(st)
 
+ß
 #MIMIC
 for t in range(numTrials):
     for samples,keep,m in product([100],[50],[0.1,0.3,0.5,0.7,0.9]):
