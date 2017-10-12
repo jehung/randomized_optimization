@@ -1,10 +1,6 @@
 import sys
 import os
 import time
-
-import sys
-import os
-import time
 from time import clock
 from itertools import product
 from array import *
