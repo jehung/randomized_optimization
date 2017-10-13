@@ -81,7 +81,7 @@ def process_time(result_list):
 
 def process_positions():
 
-    sorted_results = load_results_dicts(os.path.join(os.curdir, 'results/Four_Peaks'))
+    sorted_results = load_results_dicts(os.path.join(os.curdir, 'TSP'))
 
     print(sorted_results.keys())
 
@@ -142,11 +142,11 @@ def process_summary():
 
 
 if __name__ == "__main__":
-    data_path = os.path.join(os.curdir,'CONTPEAKS')
+    data_path = os.path.join(os.curdir,'TSP')
     ans = load_results_dicts(data_path)
     print(ans)
     print('now stage 2')
-    #process_fitness(ans)
+    process_fitness(ans)
     process_time(ans)
     #process_positions()
     #process_images()
