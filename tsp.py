@@ -89,7 +89,7 @@ Commandline parameter(s):
 # set N value.  This is the number of points
 N = 100
 random = Random()
-maxIters = 3001
+maxIters = 200001
 numTrials=5
 fill = [N] * N
 ranges = array('i', fill)
@@ -116,7 +116,6 @@ for t in range(numTrials):
     with open(fname,'w') as f:
         f.write('algo,trial,iterations,param1,param2,param3,fitness,time,fevals\n')
     ef = TravelingSalesmanRouteEvaluationFunction(points)
-    odd = DiscreteUniformDistribution(ranges)
     odd = DiscreteUniformDistribution(ranges)
     nf = DiscreteChangeOneNeighbor(ranges)
     hcp = GenericHillClimbingProblem(ef, odd, nf)
