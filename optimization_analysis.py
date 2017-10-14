@@ -35,7 +35,7 @@ def load_results_dicts(results_path):
 
         with open(full_path, 'rb') as file_obj:
             results_dicts.append(pd.read_csv(file_obj))
-            a = pd.concat(results_dicts)
+    a = pd.concat(results_dicts)
     results_group = a.groupby('algo', as_index=False)['algo','trial','iterations','param1','param2','param3','fitness','time','fevals']
 
     ga_results = results_group.get_group('GA').groupby(['iterations','param1','param2','param3'],as_index=False)['algo','fitness','time','fevals'].mean()
@@ -56,10 +56,10 @@ def process_fitness(result_list):
             print(name)
             print(group)
             ax.plot(group.iterations, group.fitness, marker='o', linestyle='', ms=12, label=name)
+            ax.legend()
         ax.set_title('Fitness Function ' + result[0])
-        ax.legend()
 
-        plt.show()
+    plt.show()
 
 
 def process_time(result_list):
@@ -72,10 +72,10 @@ def process_time(result_list):
             print(name)
             print(group)
             ax.plot(group.iterations, group.time, marker='o', linestyle='', ms=12, label=name)
-        ax.set_title('Fitness Function ' + result[0])
-        ax.legend()
+            ax.legend()
+        ax.set_title('Time Complexity ' + result[0])
 
-        plt.show()
+    plt.show()
 
 
 
@@ -135,18 +135,68 @@ def process_positions():
     plt.show()
 
 
-def process_summary():
-    pass
+def process_nn_result(results_path):
+    files = os.listdir(results_path)
+    full_path = os.path.join(results_path, 'BACK_LOG.xls')
+    results_dicts = []
+    for sheet in ['BACK', 'RHC', 'SA', 'GA']:
+        a = pd.read_excel(full_path, sheetname=sheet)
+        results_dicts.append(a)
+    a = pd.concat(results_dicts)
+    results_group = a.groupby('algo', as_index=False)['algo','iteration', 'MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed', 'param1', 'param2', 'param3']
+    #print(results_group)
+
+    backprop_results = results_group.get_group('BACK').groupby(['iteration','param1','param2','param3'],as_index=False)['algo','MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed'].mean()
+    rhc_results = results_group.get_group('RHC').groupby(['iteration','param1','param2','param3'], as_index=False)['algo', 'MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed'].mean()
+    sa_results = results_group.get_group('SA').groupby(['iteration','param1','param2','param3'], as_index=False)['algo', 'MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed'].mean()
+    ga_results = results_group.get_group('GA').groupby(['iteration','param1','param2','param3'], as_index=False)['algo', 'MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed'].mean()
+    print(ga_results)
+    return [('back',backprop_results), ('rhc',rhc_results), ('sa',sa_results), ('ga',ga_results)]
+
+
+
+def process_nn_perform(result_list):
+    for result in result_list:
+
+        groups = result[1].groupby(['param1','param2','param3'])
+
+        fig, ax = plt.subplots()
+        ax.margins(0.05)  # Optional, just adds 5% padding to the autoscaling
+        for name, group in groups:
+            print(name)
+            print(group)
+            ax.plot(group.iteration, group.acc_trg, marker='o', linestyle='-', ms=12, label='train set '+str(name))
+            ax.plot(group.iteration, group.acc_tst, marker='o', linestyle='-', ms=12, label='val set '+str(name))
+        ax.set_title('Fitness Function ' + result[0])
+        ax.legend()
+
+    plt.show()
+
+
+def process_nn_time(result_list):
+    for result in result_list:
+        groups = result[1].groupby(['param1','param2','param3'])
+
+        fig, ax = plt.subplots()
+        ax.margins(0.05)  # Optional, just adds 5% padding to the autoscaling
+        for name, group in groups:
+            print(name)
+            print(group)
+            ax.plot(group.iteration, group.elapsed, marker='o', linestyle='-', ms=12, label=name)
+        ax.set_title('Fitness Function ' + result[0])
+        ax.legend()
+
+    plt.show()
 
 
 
 
 if __name__ == "__main__":
-    data_path = os.path.join(os.curdir,'TSP')
+    data_path = os.path.join(os.curdir,'FLIPFLOP') ## this line to be changed to do different analysis
     ans = load_results_dicts(data_path)
-    print(ans)
+    #ans = process_nn_result(data_path)
     print('now stage 2')
     process_fitness(ans)
-    process_time(ans)
-    #process_positions()
-    #process_images()
+    #process_time(ans)
+    #process_nn_perform(ans)
+    #process_nn_time(ans)
