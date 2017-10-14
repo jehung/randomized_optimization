@@ -65,7 +65,7 @@ Commandline parameter(s):
 """
 
 N=1000
-maxIters = 3001
+maxIters = 5001
 numTrials=5
 fill = [2] * N
 ranges = array('i', fill)
@@ -81,7 +81,7 @@ gap = GenericGeneticAlgorithmProblem(ef, odd, mf, cf)
 pop = GenericProbabilisticOptimizationProblem(ef, odd, df)
 
 
-
+'''
 # RHC
 for t in range(numTrials):
     fname = outfile.replace('@ALG@','RHC').replace('@N@',str(t+1))
@@ -164,10 +164,10 @@ for t in range(numTrials):
             with open(fname,'a') as f:
                 f.write(st)
 
-
+'''
 #MIMIC
 for t in range(numTrials):
-    for samples,keep,m in product([100],[50],[0.1,0.3,0.5,0.7,0.9]):
+    for samples,keep,m in product([100],[50],[0.5,0.7,0.9]):
         fname = outfile.replace('@ALG@','MIMIC{}_{}_{}'.format(samples,keep,m)).replace('@N@',str(t+1))
         with open(fname,'w') as f:
             f.write('algo,trial,iterations,param1,param2,param3,fitness,time,fevals\n')
