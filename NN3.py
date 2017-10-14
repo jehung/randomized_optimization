@@ -58,7 +58,7 @@ INPUT_LAYER = 109
 #HIDDEN_LAYER3 = 100
 OUTPUT_LAYER = 1
 TRAINING_ITERATIONS = 2001
-OUTFILE = './NN_OUTPUT/XXX_LOG.txt'
+OUTFILE = './NN_OUTPUT/GA_LOG.txt'
 
 
 
@@ -224,8 +224,8 @@ def main(P,mate,mutate):
     data_set = DataSet(training_ints)
     relu = RELU()
     #rule = RPROPUpdateRule()
-    oa_name = "GA{}_{}_{}".format(P,mate,mutate)
-    with open(OUTFILE.replace('XXX', oa_name), 'w') as f:
+    oa_name = "GA_{}_{}_{}".format(P,mate,mutate)
+    with open(OUTFILE.replace('GA', oa_name), 'w') as f:
         f.write('{},{},{},{},{},{}\n'.format('iteration', 'MSE_trg', 'MSE_tst', 'acc_trg', 'acc_tst', 'elapsed'))
     classification_network = factory.createClassificationNetwork([INPUT_LAYER, OUTPUT_LAYER],relu)
     nnop = NeuralNetworkOptimizationProblem(data_set, classification_network, measure)
