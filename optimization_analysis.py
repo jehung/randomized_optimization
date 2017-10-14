@@ -1,9 +1,7 @@
 __author__ = 'Jeff'
 import os
-import pickle as pickle
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 import numpy as np
 
 
@@ -183,7 +181,7 @@ def process_nn_time(result_list):
             print(name)
             print(group)
             ax.plot(group.iteration, group.elapsed, marker='o', linestyle='-', ms=12, label=name)
-        ax.set_title('Fitness Function ' + result[0])
+        ax.set_title('Time Complexity ' + result[0])
         ax.legend()
 
     plt.show()
@@ -192,11 +190,11 @@ def process_nn_time(result_list):
 
 
 if __name__ == "__main__":
-    data_path = os.path.join(os.curdir,'FLIPFLOP') ## this line to be changed to do different analysis
-    ans = load_results_dicts(data_path)
-    #ans = process_nn_result(data_path)
+    data_path = os.path.join(os.curdir,'NN_OUTPUT') ## this line to be changed to do different analysis
+    #ans = load_results_dicts(data_path)
+    ans = process_nn_result(data_path)
     print('now stage 2')
-    process_fitness(ans)
+    #process_fitness(ans)
     #process_time(ans)
     #process_nn_perform(ans)
-    #process_nn_time(ans)
+    process_nn_time(ans)
