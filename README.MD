@@ -29,7 +29,6 @@ The zip folder includes the following files:
 #### Data files
 - `sample_orig_2016.txt`
 - `sample_svcg_2016.txt`
-- `train_cleaned.csv`
 
 
 #### Resutls folders
