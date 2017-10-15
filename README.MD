@@ -16,7 +16,7 @@ Additional reference can be found here: https://stackoverflow.com/questions/3573
 
 The zip folder includes the following files:
 
-#### Python code file
+#### Python code files
 - `NN0.py`: Code for Backpropagation training of neural network
 - `NN1.py`: Code for Randomised Hill Climbing training of neural network
 - `NN2.py`: Code for Simulated Annleaing training of neural network
