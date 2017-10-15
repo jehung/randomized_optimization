@@ -5,9 +5,9 @@
 2) The folders NNOUTPUT, CONTPEAKS, FLIPFLOP and TSP must be created in the same folder as the Jython code before running it.
 3) The files sample_orig_2016.txt, sample_svcg_2016.txt must be in the same folder as the .py files
 4) To run the JAVA files, you must have jpype installed. Do this before running the code in terminal / command line:
-`git clone https://github.com/originell/jpype.git`
-`cd jpype`
-`python setup.py install'`
+- `git clone https://github.com/originell/jpype.git`
+- `cd jpype`
+- `python setup.py install'`
 
 Additional reference can be found here: https://stackoverflow.com/questions/35736763/practical-use-of-java-class-jar-in-python
 
